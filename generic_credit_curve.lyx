@@ -1,0 +1,3263 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass article
+\begin_preamble
+\usepackage{sectsty} 
+\sectionfont{\centering} 
+\renewcommand\thesection{\Roman{section}}
+
+\usepackage{blindtext}
+
+\usepackage{array}
+
+\usepackage{secdot}
+\sectiondot{section}
+\sectiondot{subsection}
+
+\usepackage{titlesec}
+
+\titleformat{\section}
+  {\normalfont\scshape}{\thesection}{1em}{}
+
+\titleformat*{\subsection}
+{\normalfont\itshape}
+
+%\renewenvironment{abstract}
+%               {\list{}
+%                \item \textbf{\textit{Abstract ---}}\relax}
+%               {\endlist}
+\renewenvironment{abstract}{\textbf{\textit{Abstract ---}}}
+
+\author{
+\begin{tabular}[t]{p{5.5cm}@{\extracolsep{2cm}}p{5.5cm}} 
+\centering{Marcelo Labre}  & \centering{Bertrand Le Nézet} \tabularnewline
+\centering{\small{Adjunct Associate Professor}} & \centering{\small{Quantitative Analyst}} \tabularnewline 
+\centering{\small{NUS Business School}} & \centering{\small{OCBC Bank}} \tabularnewline
+\end{tabular}
+}
+\date{}
+
+\usepackage[table]{xcolor}% http://ctan.org/pkg/xcolor
+
+\usepackage{amsmath}
+\DeclareMathOperator*{\E}{\mathbb{E}}
+
+\fancyhf{}% Clear fancy header/footer
+\renewcommand{\headrulewidth}{0pt}
+%\fancyhead[CO]{}
+\fancyfoot[C]{\thepage}
+%\makeatletter
+%\let\ps@plain\ps@fancy% Plain page style = fancy page style
+%\makeatother
+
+\usepackage{prettyref}
+\newrefformat{tab}{Table\,\ref{#1}}
+\newrefformat{fig}{Figure\,\ref{#1}}
+\newrefformat{eq}{Eq.\,\textup{(\ref{#1})}}
+
+\renewcommand{\tabref}{\Tabref}
+\renewcommand{\figref}{\Figref}
+\renewcommand{\secref}{\Secref}
+
+\usepackage{url}
+\end_preamble
+\use_default_options true
+\begin_modules
+theorems-ams
+eqs-within-sections
+figs-within-sections
+\end_modules
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 3cm
+\topmargin 2.5cm
+\rightmargin 2.5cm
+\bottommargin 2.5cm
+\headsep 0.5cm
+\footskip 1cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 2
+\papersides 1
+\paperpagestyle fancy
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Construction of Generic Credit Curves for Valuation and Risk Management
+ of Illiquid Credit Exposure
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+maketitle
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Abstract
+Trading books of most financial institutions contain significant exposure
+ to illiquid defaultable instruments that are subject to mark-to-market
+ accounting.
+ Due to unavailability of regular market quotes of credit spreads for such
+ instruments, one must make use of proxies for valuation and manage risks.
+ Credit curve proxies are typically arbitrary, resulting in inaccurate risk
+ management and high valuation uncertainties.
+ In addition, a typical bias toward over-conservativeness results in higher
+ regulatory capital calculation.
+ We propose an approach for the construction of generic credit curves that
+ establishes consistency with the default risk of the wider credit market,
+ implicitly solving the various problems with arbitrary proxies.
+ The approach consists in adopting the universe of credit rated issuers
+ with visible CDS spread market quotes to form the underlying portfolio
+ of an imaginary synthetic Collateralized Debt Obligation (CDO), in which
+ credit ratings are associated with specific tranches or subordinations.
+ AAA-rated spreads constitute the portfolio loss risk of a super senior
+ tranche while CCC-rated spreads are aligned with equity (first-loss) tranche
+ losses, with all other ratings forming the mezzanine subordinations.
+ Vasicek's portfolio loss distribution is used to imply the loss distribution
+ of the portfolio, allowing for the construction of generic credit spread
+ for each desired maturity, credit subordination, currency, sector and rating.
+\end_layout
+
+\begin_layout Abstract
+Keywords: Credit spreads, Credit Default Swaps, Collateralized Debt Obligation,
+ Vasicek portfolio loss distribution
+\end_layout
+
+\begin_layout Section
+Introduction
+\end_layout
+
+\begin_layout Standard
+The valuation and risk management aspects of exposure to illiquid credit
+ instruments in trading books of financial institutions played a central
+ role during and in the subsequent years from the Global Financial Crisis
+ of 2008/09.
+ Those positions were subject to mark-to-market accounting, and one problem
+ originated from the required mark down due to the absence of market implied
+ credit curves as a result of Level 3 classification under FASB 157
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+FASB 157 is a statement issued in 2006 by the Financial Accounting Standards
+ Board (FASB) that requires all publicly-traded firms in the United States
+ to classify their assets into three categories, Level 1, Level 2, or Level
+ 3, according to the level of uncertainty with which fair values can be
+ determined.
+ Based on this, regulators have prescribed the write down of Level 3 assets,
+ which are the most illiquid and therefore the highest fair valuation uncertaint
+y.
+ More details on asset valuation classification can be found in 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://www.fasb.org/cs/BlobServer?blobkey=id&blobwhere=1175823288587&blobheader=ap
+plication/pdf&blobcol=urldata&blobtable=MungoBlobs
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+.
+ Moreover, regulatory capital requirements calculated from Value at Risk
+ (VaR) were heavily underestimated due to the lack of volatility information
+ of credit curves from such illiquid positions, ultimately leading to the
+ liquidity crisis that ensued as a result of the perceived vulnerability
+ of financial institutions.
+ Although now somewhat tamed, the problem with valuation and risk management
+ of illiquid credit instruments in trading books remains high on the agenda
+ of financial institutions and regulators.
+ One way around the issue is to use appropriate generic credit curves.
+\end_layout
+
+\begin_layout Standard
+Generic credit curves are basically proxies that aggregate information from
+ visible market credit curves used to infer the credit curves for the illiquid
+ instruments.
+ They represent a generalization of credit risk for different combinations
+ of denomination currency, credit subordination (senior unsecured, subordinated)
+, sector, credit rating and maturity.
+ For instance, an illiquid Canadian dollar, senior unsecured, BBB corporate
+ bond exposure requires one to construct a generic credit curve with exactly
+ those attributes for subsequent valuation and risk management activities.
+\end_layout
+
+\begin_layout Standard
+Most commercial and in-house development of models and methodologies for
+ construction of credit curves adopt a specific group of representative
+ issuers for credit rating, sector, currency and sometimes geography, applying
+ some form of averaging directly to credit spreads as a model assumption.
+ One such example is described in 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "key-6"
+
+\end_inset
+
+, where generic curves are formed via mean spreads at each maturity, median
+ spreads at each maturity, and what the authors call "best fit" method which
+ minimizes the sum of squared differences between the individual spreads
+ and the estimated generic curve spreads.
+ One criticism is that such approaches fail to capture the implicit market
+ dependence structure between different cohorts (defined by specific ratings),
+ geographies and sectors.
+ And how to handle the cases for which a statistically representative set
+ of issuers does not exist
+\end_layout
+
+\begin_layout Standard
+In the subsequent sections we discuss the construction of generic credit
+ curves that establishes consistency with the default risk of the wider
+ credit market.
+ Where marking-to-
+\shape italic
+market
+\shape default
+ is not possible, these curves may be used as inputs in order to mark-to-
+\shape italic
+model
+\shape default
+ illiquid credit exposure.
+ More importantly, they may be used to calculate VaR and other risk measures
+ (expected shortfall, stress testing, etc.) by providing live information
+ on market volatility otherwise unavailable.
+\end_layout
+
+\begin_layout Section
+Construction of generic credit curves
+\end_layout
+
+\begin_layout Subsection
+Preliminary considerations and assumptions
+\end_layout
+
+\begin_layout Standard
+One example where generic credit curves apply are those non-US issuers represent
+ing large global corporations with dealings across the global financial
+ system and debt issuance in both USD and local currency.
+ Although USD issuances are usually more liquid with visible market quotes,
+ local currency restrictions and the limited liquidity of local markets
+ make valuation and risk management impossible tasks for most local currency
+ exposure without generic credit curves.
+ And then there are issuers for which even USD-denominated CDS quotes are
+ very limited.
+ The goal is to be able to generate such generic credit curves that are
+ consistent with market expectations of credit defaults subdivided by credit
+ subordination, sector, rating and maturity as illustrated by 
+\begin_inset CommandInset ref
+LatexCommand formatted
+reference "fig:Generic-Credit-Curves"
+
+\end_inset
+
+.
+ The level of granularity can even go one step further depending on availability
+ of quoted CDS spreads on specific regions and countries.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+scalebox{0.7}{ 
+\backslash
+begin{tabular}{llll}   
+\backslash
+hline Debt Tier & Sector & Rating & Tenor 
+\backslash
+
+\backslash
+    
+\backslash
+hline Senior Unsecured & Basic Materials & AAA & 1Y 
+\backslash
+
+\backslash
+    Subordinated & Consumer Goods & AA & 3Y 
+\backslash
+
+\backslash
+     & Consumer Services & A & 5Y 
+\backslash
+
+\backslash
+     & Enegery & BBB & 10Y 
+\backslash
+
+\backslash
+     & Financial & BB &  
+\backslash
+
+\backslash
+     & Government & B &  
+\backslash
+
+\backslash
+     & Healthcare & CCC &  
+\backslash
+
+\backslash
+     & Industrials &  &  
+\backslash
+
+\backslash
+     & Technology &  &  
+\backslash
+
+\backslash
+     & Telecom &  &  
+\backslash
+
+\backslash
+     & Utilities &  &  
+\backslash
+
+\backslash
+     
+\backslash
+hline 
+\backslash
+end{tabular} }
+\end_layout
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Generic-Credit-Curves"
+
+\end_inset
+
+Generic credit curves depth
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Another important point is that we use only CDS spreads to construct generic
+ credit curves, thus alienating the various other credit-sensitive instruments
+ (e.g.
+ bonds, credit linked notes, etc) from which default probabilities may also
+ be implied.
+ The main reason is that we are constructing credit curves, and CDS spreads
+ represent the direct market expectation on credit defaults while other
+ instruments embed other risk factors such as interest rates and funding.
+ For instance, when using bonds prices, one must take into account the interest
+ rate and funding cost (i.e., term liquidity premium) portions of bond prices
+ in order to bootstrap credit spreads.
+ While it is straightforward to capture the interest rates portion from
+ yield curves, working out the funding cost requires knowledge of asset
+ swap market quotes, which are often not visible even for the most liquid
+ bond issuances.
+ In addition, bonds and other credit instruments suffer from lack of standardiza
+tion, non-transparent price discovery (OTC transactions) and lack of coverage
+ for the full term structure of a credit curve.
+ Finally, some of these other credit instruments embed redemption or call
+ features, which are hard to value and thus interfere with the accurate
+ computation of credit spreads.
+\end_layout
+
+\begin_layout Subsection
+The synthetic CDO approach
+\end_layout
+
+\begin_layout Standard
+Most typical approaches for the creation of generic credit curves adopt
+ some form of averaging as assumption to consolidate credit spreads directly.
+ As an example, the process would start by aggregating a representative
+ sample of issuers with quoted and liquid CDS spreads for senior debt (subordina
+tion) in industrials (sector), and that are rated BBB.
+ Then, an arithmetic mean would be applied to those CDS spreads across all
+ maturities to construct the Senior-Industrials-BBB generic credit curve.
+ The inconsistency of this approach becomes obvious when credit spreads
+ on all maturities are not available for all issuers of the adopted representati
+ve group.
+ One way around would be to limit the process to only issuers with a complete
+ credit curve, but this would exclude valuable market information embedded
+ in the credit spreads of those issuers removed.
+ More importantly, there are sector-ratings for which no CDS spreads quotes
+ exist at all for which the construction of credit curves under such approaches
+ is not doable.
+\end_layout
+
+\begin_layout Standard
+Another problem with similar approaches is that it performs calculation
+ on the CDS spreads directly, thus limiting the construction of credit curves
+ to the currencies in which there market CDS spreads.
+ But the cases in which generic credit curves are most needed are precisely
+ those currencies with limited market liquidity in the CDS market.
+ Finally, an important aspect of credit markets is the interdependence of
+ credit event expectations among different sectors and ratings in the wider
+ market.
+ This is completely missed by marginal computation of credit spread averages.
+\end_layout
+
+\begin_layout Standard
+We propose to solve these problems by first making the universe of quoted
+ CDS spreads into the portfolio of an imaginary synthetic Collateralized
+ Debt Obligation (CDO), where credit ratings are associated with specific
+ tranches or CDO subordinations.
+ In this construct, AAA-rated and CCC-rated CDS spreads respectively imply
+ the credit loss expectations of super senior and equity (first-loss) tranches,
+ while all other ratings constitute the credit loss expectations of the
+ mezzanine CDO subordinations.
+ Then, as illustrated in 
+\begin_inset CommandInset ref
+LatexCommand formatted
+reference "fig:Vasicek_CDO"
+
+\end_inset
+
+ for a certain maturity in the credit spread term-structure, one needs only
+ to know the loss probability distribution of the synthetic credit portfolio
+ in order to infer credit spreads for each rating acting as tranches of
+ the CDO.
+ Calibrating loss distributions for maturities in the credit spread term-structu
+re allows us to construct complete generic credit curves for each rating,
+ sector and credit subordination.
+\end_layout
+
+\begin_layout Standard
+Our approach eliminates inconsistency as each maturity’s loss distribution
+ allows us to infer all the points in the credit curve, whether or not a
+ number of issuers in the portfolio contributed a complete credit term structure.
+ Because the approach works on the survival probability space, credit curves
+ resulting from the term structure of survival probabilities may be generated
+ in virtually any currency, as it will be subsequently discussed.
+ And finally, the interdependence among credit spreads of different ratings
+ is captured through the measures of dependence embedded in portfolio loss
+ distributions.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename vasicek-cdo.png
+	scale 40
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Vasicek_CDO"
+
+\end_inset
+
+Synthetic CDO concept
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+As shown in 
+\begin_inset CommandInset ref
+LatexCommand formatted
+reference "fig:Vasicek_CDO"
+
+\end_inset
+
+, we have a total of 
+\begin_inset Formula $n_{k}=7$
+\end_inset
+
+ tranches or ratings (AAA, AA, A, BBB, BB, B and CCC) and a total of 
+\begin_inset Formula $n_{j}=4$
+\end_inset
+
+ maturities (1-year, 3-year, 5-year and 10-year).
+ We define attachment/detachment points 
+\begin_inset Formula $ku_{j}$
+\end_inset
+
+ for each tranche and for each maturity 
+\begin_inset Formula $T_{j}$
+\end_inset
+
+, where 
+\begin_inset Formula $k=1,2,\ldots n_{k}$
+\end_inset
+
+ and 
+\begin_inset Formula $j=1,2,\ldots n_{j}$
+\end_inset
+
+..
+ The variable 
+\begin_inset Formula $u_{j}$
+\end_inset
+
+ is simply a dummy parameter that is calibrated alongside the loss distribution
+ of the portfolio given that the subordinations of the imaginary CDO are
+ unknown.
+\end_layout
+
+\begin_layout Subsection
+Vasicek portfolio loss distribution
+\end_layout
+
+\begin_layout Standard
+The next step is to model the loss probability distribution of the underlying
+ credit portfolio of our synthetic CDO.
+ The Gaussian copula model emerged during the late 1990’s as the market
+ standard for pricing portfolio credit derivatives.
+ It was popularized by 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "key-9"
+
+\end_inset
+
+ and 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "key-10"
+
+\end_inset
+
+, becoming the prevalent approach used by practitioners and academics throughout
+ the past decade.
+ This model was not new, but in fact a simplified form of earlier one-factor
+ models proposed by Vasicek in 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "key-12"
+
+\end_inset
+
+ and 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "key-3"
+
+\end_inset
+
+ and almost identical to the original CreditMetrics model introduced by
+ Gupton in 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "key-11"
+
+\end_inset
+
+.
+ Its main breakthrough was the analogy established between techniques used
+ in credit risk management of loan portfolios and portfolios of credit securitie
+s in derivatives such as CDOs.
+\end_layout
+
+\begin_layout Standard
+Our approach goes back to the foundations of the Gaussian copula model proposed
+ earlier by Vasicek, which provides a closed-form solution for the loss
+ probability distribution given a large number of issuers in the underlying
+ credit portfolio.
+ Vasicek's model is founded on the principles outlined by the Merton model
+ of a firm's capital structure
+\begin_inset CommandInset citation
+LatexCommand cite
+key "key-8"
+
+\end_inset
+
+, which establishes that credit default happen when the value of a firm's
+ assets falls below the contractual value of its debt obligations within
+ a certain horizon.
+ In Merton's model, the debtor's assets dynamics is assumed to follow the
+ Geometric Brownian Motion (GBM)
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\frac{dA_{i}}{A_{i}}=\mu_{i}dt+\sigma_{i}dW_{i}
+\]
+
+\end_inset
+
+where, for each debtor 
+\begin_inset Formula $i$
+\end_inset
+
+ in a credit portfolio, 
+\begin_inset Formula $A_{i}$
+\end_inset
+
+ represents the debtor's assets, 
+\begin_inset Formula $\mu_{i}$
+\end_inset
+
+ and 
+\begin_inset Formula $\sigma_{i}$
+\end_inset
+
+ are respectively the mean and standard deviation of changes in the debtor's
+ assets, and 
+\begin_inset Formula $dW_{i}$
+\end_inset
+
+ is a Brownian Motion.
+ This gives the value of the assets at a horizon 
+\begin_inset Formula $T$
+\end_inset
+
+ as
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\log A_{i}(T)=\log A_{i}(0)+(\mu_{i}-\frac{1}{2}\sigma_{i}^{2})T+\sigma_{i}\sqrt{T}z_{i},
+\]
+
+\end_inset
+
+where 
+\begin_inset Formula $z_{i}$
+\end_inset
+
+ is a standard normal variable.
+ In this setup, the probability of a debtor to default on its obligations
+ by a horizon 
+\begin_inset Formula $T$
+\end_inset
+
+ is the probability of its assets 
+\begin_inset Formula $A_{i}$
+\end_inset
+
+ falling below its nominal debt obligations 
+\begin_inset Formula $B{}_{i}$
+\end_inset
+
+, given by
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{alignat*}{1}
+p_{i} & =\textrm{P}\left[A_{i}(T)<B_{i}\right]\\
+ & =\textrm{P}\left[z_{i}<\frac{\log\frac{B_{i}}{A_{i}(0)}-(\mu_{i}-\frac{1}{2}\sigma_{i}^{2})T}{\sigma_{i}\sqrt{T}}\right]\\
+ & =\Phi\left[\frac{\log\frac{B_{i}}{A_{i}(0)}-(\mu_{i}-\frac{1}{2}\sigma_{i}^{2})T}{\sigma_{i}\sqrt{T}}\right]\\
+ & =\Phi(z_{i}).
+\end{alignat*}
+
+\end_inset
+
+where 
+\begin_inset Formula $\Phi$
+\end_inset
+
+ is the cumulative standard normal distribution function.
+\end_layout
+
+\begin_layout Standard
+Now consider a portfolio with 
+\begin_inset Formula $n$
+\end_inset
+
+ such debt obligations in equal nominal amounts, and let the probability
+ of default of any debtor be 
+\begin_inset Formula $p_{i}=p$
+\end_inset
+
+.
+ Also, allow for the random portion 
+\begin_inset Formula $z_{i}$
+\end_inset
+
+ of the assets of any two debtors to be correlated with correlation coefficient
+ 
+\begin_inset Formula $\rho$
+\end_inset
+
+.
+ In this case, 
+\begin_inset Formula $z_{i}$
+\end_inset
+
+ can be expressed by
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+z_{i}=\Phi^{-1}(p)=y\sqrt{\rho}+\varepsilon_{i}\sqrt{1-\rho},
+\]
+
+\end_inset
+
+where 
+\begin_inset Formula $y$
+\end_inset
+
+ and 
+\begin_inset Formula $\varepsilon_{1},\varepsilon_{2},\ldots,\varepsilon_{i},\ldots\varepsilon_{n}$
+\end_inset
+
+ are mutually independent and identically distributed standard normal variables.
+ This is the well established one-factor modeling of portfolios where 
+\begin_inset Formula $y$
+\end_inset
+
+ is interpreted as a common portfolio factor that emerges from a property
+ of equicorrelated marginal normal distributions.
+ In economic terms, the factor 
+\begin_inset Formula $y$
+\end_inset
+
+ accounts for the systemic risk (e.g., wider economy) while the term 
+\begin_inset Formula $\varepsilon_{i}$
+\end_inset
+
+ quantifies the specific risk of each firm 
+\begin_inset Formula $i$
+\end_inset
+
+.
+ From this we can derive the loss probability of obligor 
+\begin_inset Formula $i$
+\end_inset
+
+ conditional on the systemic factor 
+\begin_inset Formula $y$
+\end_inset
+
+ as
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align}
+\textrm{P}\left[\left.\varepsilon_{i}<\frac{\Phi^{-1}(p)-y\sqrt{\rho}}{\sqrt{1-\rho}}\right\vert y=Y\right]=\nonumber \\
+\textrm{P}\left[\left.d_{i}=1\right\vert y=Y\right]\nonumber \\
+\Rightarrow p(Y)=\Phi\left[\frac{\Phi^{-1}(p)-Y\sqrt{\rho}}{\sqrt{1-\rho}}\right],\label{eq:LGDi}
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+with 
+\begin_inset Formula $d_{i}=\boldsymbol{1}_{(A_{i}(T)<B_{i})}$
+\end_inset
+
+ as the unit step function to define a default indicator, i.e., 
+\begin_inset Formula $d_{i}=1$
+\end_inset
+
+ in case of a default and zero otherwise.
+ The total relative loss of the credit portfolio is then given by
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+d=\sum_{i=1}^{n}w_{i}d_{i},
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\sum_{i=1}^{n}w_{i}=1,
+\]
+
+\end_inset
+
+where the 
+\begin_inset Formula $w_{i}'\textrm{s}$
+\end_inset
+
+ represent the weights of the portfolio constituents.
+ Noting that 
+\begin_inset Formula $d\in[0,1]$
+\end_inset
+
+, we have
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+\textrm{E}\left[\left.d\right\vert Y\right]= & \sum_{i=1}^{n}w_{i}E\left[\left.d_{i}\right\vert Y\right]\\
+= & \sum_{i=1}^{n}w_{i}\textrm{P}\left[\left.d_{i}=1\right\vert Y\right]\\
+= & p(Y)\sum_{i=1}^{n}w_{i}=p(Y),
+\end{align*}
+
+\end_inset
+
+and
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+\textrm{VAR}\left[\left.d\right\vert Y\right]= & \sum_{i=1}^{n}w_{i}^{2}\textrm{VAR}\left[\left.d_{i}\right\vert Y\right]\\
+= & p(Y)\left[1-p(Y)\right]\sum_{i=1}^{n}w_{i}^{2}.
+\end{align*}
+
+\end_inset
+
+For very large portfolios, i.e., 
+\begin_inset Formula $n\rightarrow\infty$
+\end_inset
+
+, we have
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\lim_{n\rightarrow\infty}\sum_{i=1}^{n}w_{i}^{2}\Rightarrow\lim_{n\rightarrow\infty}\textrm{VAR}\left[\left.d\right\vert Y\right]=0,
+\]
+
+\end_inset
+
+Thus, the cumulative probability function (CDF) of losses up to a proportion
+ 
+\begin_inset Formula $x\in[0,1]$
+\end_inset
+
+ of the total portfolio is given by
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+F(x)=\textrm{P}\left[d\leq x\right]\underset{{\scriptscriptstyle n\rightarrow\infty}}{\longrightarrow} & \textrm{P}\left[\textrm{E}\left[\left.d\right\vert Y\right]\leq x\right]=\\
+ & \textrm{P}\left[p(Y)\leq x\right]=\\
+ & \textrm{P}\left[Y\geq p^{-1}(x)\right]\Rightarrow
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+F(x)=\Phi\left[\frac{\sqrt{1-\rho}\Phi^{-1}(x)-\Phi^{-1}(p)}{\sqrt{\rho}}\right],\label{eq:CDF}
+\end{equation}
+
+\end_inset
+
+with the probability density function (PDF) from 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "key-3"
+
+\end_inset
+
+ derived as
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{alignat}{1}
+f(x) & =\sqrt{\frac{1-\rho}{\rho}}\exp\left[-\frac{1}{2\rho}\Bigl(\sqrt{1-\rho}\Phi^{-1}(x)\right.\label{eq:PDF}\\
+ & \left.-\Phi^{-1}(p)\Bigr)^{2}+\frac{1}{2}\left(\Phi^{-1}(x)\right)^{2}\right].\nonumber 
+\end{alignat}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Bootstrapping default probabilities from CDS spreads
+\end_layout
+
+\begin_layout Standard
+In order to calibrate generic curves via the Vasicek portfolio loss distribution
+s in 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:CDS"
+
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:CDF"
+
+\end_inset
+
+, we need to avail of default probabilities implied from market expectations.
+ These default probabilities have a term structure and can be bootstrapped
+ from market quotes of the CDS spreads.
+ A CDS is a swap of cash for credit event protection where the protection
+ buyer agrees to pay a regular fee (
+\shape italic
+spread
+\shape default
+) to the protection seller whom, in turn, is liable to pay the contractual
+ value (
+\shape italic
+notional
+\shape default
+) to the protection buyer in case of a credit event
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+Since CDS contracts are standardized under the International Swaps and Derivativ
+es Association (ISDA), the various definitions of credit events are available
+ from the 2014 ISDA Credit Derivatives Definitions (
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://www2.isda.org/asset-classes/credit-derivatives/2014-isda-credit-derivatives
+-definitions/
+\end_layout
+
+\end_inset
+
+).
+\end_layout
+
+\end_inset
+
+ that happens before the contractual expiration (
+\shape italic
+maturity
+\shape default
+) of the agreement.
+ Note that the CDS acts as an insurance to the protection buyer against
+ credit events (defaults), and even the fee paid is often called 
+\shape italic
+premium
+\shape default
+.
+\end_layout
+
+\begin_layout Standard
+Financially, the CDS effectively has two legs, a premium and a protection
+ leg.
+ Mathematically, the premium leg of a CDS with notional 1 and maturity 
+\begin_inset Formula $T_{j}$
+\end_inset
+
+ can be written as
+\begin_inset Formula 
+\begin{align*}
+ & \textrm{Premium Leg PV}=\\
+ & S_{j}\sum_{n=1}^{N}\left\{ (t_{n}-t_{n-1})\right.\\
+ & \times\left.\left[(1-\alpha)B_{n}-\alpha B_{n-1}\right]\left[(1-\alpha)q_{n}-\alpha q_{n-1}\right]\right\} ,
+\end{align*}
+
+\end_inset
+
+where
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $t_{n}$
+\end_inset
+
+ represents the premium payment dates in years from inception date 
+\begin_inset Formula $t_{0}=0$
+\end_inset
+
+ and with maturity date 
+\begin_inset Formula $t_{N}=T_{j}$
+\end_inset
+
+,
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $S_{j}$
+\end_inset
+
+ is the spread or premium agreed to be paid until credit event or maturity
+ 
+\begin_inset Formula $T_{j}$
+\end_inset
+
+ is reached,
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $B_{n}$
+\end_inset
+
+ is the discount factor computed from the risk-free rate on date 
+\begin_inset Formula $t_{n}$
+\end_inset
+
+,
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $q_{n}$
+\end_inset
+
+ is the risk-neutral survival probability of the underlying credit by date
+ 
+\begin_inset Formula $t_{n}$
+\end_inset
+
+, and
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\alpha\in[0,1]$
+\end_inset
+
+ is the parameter that takes into account the accrued premium depending
+ on the assumption of when default happens in the premium payment cycle.
+\end_layout
+
+\begin_layout Standard
+Note that the payment frequency of a CDS is determined by the difference
+ 
+\begin_inset Formula $t_{n}-t_{n-1}$
+\end_inset
+
+, mostly quarterly for CDSs on developed markets currencies and semi-annually
+ for emerging markets.
+ Also, because this is a discrete representation of the CDS premium leg,
+ a common assumption is that default happens in the middle of the premium
+ payment period, or 
+\begin_inset Formula $\alpha=0.5$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Similarly, the protection leg of the same CDS with notional 1 and and maturity
+ 
+\begin_inset Formula $T_{j}$
+\end_inset
+
+ can be written as
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\text{Protection Leg PV}=(1-R)\sum_{n=1}^{m\cdot N}B_{n}\left[q_{n}-q_{n-1}\right],
+\]
+
+\end_inset
+
+where 
+\begin_inset Formula $t_{n}$
+\end_inset
+
+, 
+\begin_inset Formula $B_{n}$
+\end_inset
+
+ and 
+\begin_inset Formula $q_{n}$
+\end_inset
+
+ are defined as previously,
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $m$
+\end_inset
+
+ is a annual frequency in we assume credit events may happen, and
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $R$
+\end_inset
+
+ is the recovery rate.
+\end_layout
+
+\begin_layout Standard
+We choose 
+\begin_inset Formula $m=12$
+\end_inset
+
+ (monthly discretization) for computational convenience, as 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "key-1"
+
+\end_inset
+
+ shows that the difference between daily discretization 
+\begin_inset Formula $(m=365)$
+\end_inset
+
+ and monthly discretization 
+\begin_inset Formula $(m=12)$
+\end_inset
+
+ produces an absolute error which is well within bid-ask spreads of market
+ quotes.
+ Also, we adopt a typical practitioner's assumption on the recovery rate,
+ or 40% for senior unsecured debt and 20% for subordinated debt as supported
+ by studies such as 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "key-4"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+CDS spreads are quoted at par, i.e., the premium to be paid by protection
+ buyers that would equalize the cash flows of the premium leg with the ones
+ from the protection leg.
+ This implies that
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align}
+ & S_{j}\sum_{n=1}^{N}\left\{ (t_{n}-t_{n-1})\left[(1-\alpha)B_{n}-\alpha B_{n-1}\right]\right.\nonumber \\
+ & \left.\times\left[(1-\alpha)q_{n}-\alpha q_{n-1}\right]\right\} \nonumber \\
+ & -(1-R)\sum_{n=1}^{m\cdot N}B_{n}\left[q_{n}-q_{n-1}\right]=0\label{eq:CDS}
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The only unknown that needs to be calculated from 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:CDS"
+
+\end_inset
+
+ is the probability of survival term structure 
+\begin_inset Formula $q_{1},q_{2},\ldots,q_{n},\ldots,q_{N}$
+\end_inset
+
+.
+ To that end, we adopt the market practice presented in 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "key-13"
+
+\end_inset
+
+ which uses a reduced-form (or intensity-based) model as the solution to
+ the probability of survival term structure, or
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+q_{n}=e^{-h(t_{n})t_{n}}\label{eq:qn}
+\end{equation}
+
+\end_inset
+
+Here 
+\begin_inset Formula $h$
+\end_inset
+
+ is a hazard rate stepwise function, basically a constant from one maturity
+ date 
+\begin_inset Formula $T_{j-1}$
+\end_inset
+
+ to another 
+\begin_inset Formula $T_{j}$
+\end_inset
+
+ in the term structure.
+ Starting with 
+\begin_inset Formula $q_{0}=1$
+\end_inset
+
+, 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:CDS"
+
+\end_inset
+
+ is applied recursively through all maturities 
+\begin_inset Formula $T_{1},T_{2},\ldots,T_{j},\ldots,T_{n_{j}}$
+\end_inset
+
+ in order to bootstrap 
+\begin_inset Formula $h(T_{j})$
+\end_inset
+
+ for each maturity.
+ This results in the term structure of survival probabilities that can then
+ be calculated with 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:qn"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+This process applies for CDS quotes of one single issuer.
+ In order to imply the representative term structure for a certain rating
+ 
+\begin_inset Formula $k$
+\end_inset
+
+ and maturity 
+\begin_inset Formula $T_{j}$
+\end_inset
+
+ with a number of issuers 
+\begin_inset Formula $n_{i}$
+\end_inset
+
+, we calculate the respective survival probability as the geometric mean
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+q_{kj}=\left(q_{kj}^{(1)}q_{kj}^{(2)}q_{kj}^{(3)}\ldots q_{kj}^{(i)}\ldots q_{kj}^{(n_{i})}\right)^{\frac{1}{n_{i}}}.
+\]
+
+\end_inset
+
+Finally, the default probabilities can be calculated from survival probabilities
+ as simply 
+\begin_inset Formula $1-q_{kj}$
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Subsection
+Calibration of generic credit curves
+\end_layout
+
+\begin_layout Standard
+We now show the application of 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:CDF"
+
+\end_inset
+
+ to generate credit spreads for different ratings and through the term-structure
+ of survival probabilities as in 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:qn"
+
+\end_inset
+
+.
+ Consider the tranche 
+\begin_inset Formula $k$
+\end_inset
+
+ of the CDO defined by its detachment point 
+\begin_inset Formula $ku_{j}$
+\end_inset
+
+ and attachment point 
+\begin_inset Formula $(k-1)u_{j}$
+\end_inset
+
+ for maturity 
+\begin_inset Formula $T_{j}$
+\end_inset
+
+.
+ The cumulative expected loss of this tranche is defined by
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\textrm{E}_{k}\left[\textrm{Loss}_{j}\right]=\textrm{E}\left[\left((x-ku_{j})^{-}-(k-1)u_{j}\right)^{+}\right],
+\]
+
+\end_inset
+
+where 
+\begin_inset Formula $x$
+\end_inset
+
+ is a random variable representing the losses in the portfolio, 
+\begin_inset Formula $(A)^{-}=\min(A,0)$
+\end_inset
+
+ and 
+\begin_inset Formula $(A)^{+}=\max(A,0)$
+\end_inset
+
+.
+ We can also express this expectation through 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:CDF"
+
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+ & \textrm{E}_{k}\left[\textrm{Loss}_{j}\right]=\\
+ & u_{j}\left\{ k\Phi\left[\frac{\sqrt{1-\rho_{j}}\Phi^{-1}(ku_{j})-\Phi^{-1}(p_{j})}{\sqrt{\rho_{j}}}\right]\right.\\
+ & \left.-(k-1)\Phi\left[\frac{\sqrt{1-\rho_{j}}\Phi^{-1}((k-1)u_{j})-\Phi^{-1}(p_{j})}{\sqrt{\rho_{j}}}\right]\right\} .
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+On the other hand, the same expectation can be expressed through the survival
+ probabilities bootstrapped from the CDS quotes of each respective rating
+ and maturity.
+ We have
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\textrm{E}_{k}\left[\textrm{Loss}_{j}\right]=u_{j}(1-q_{kj}),
+\]
+
+\end_inset
+
+where 
+\begin_inset Formula $q_{kj}$
+\end_inset
+
+ is defined by 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:qn"
+
+\end_inset
+
+ for maturity 
+\begin_inset Formula $T_{j}$
+\end_inset
+
+ and rating 
+\begin_inset Formula $k$
+\end_inset
+
+.
+ Combining these two results leads to the error function
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+ & \varepsilon_{k}(u_{j},\rho_{j},p_{j})=\\
+ & u_{j}\left\{ k\Phi\left[\frac{\sqrt{1-\rho_{j}}\Phi^{-1}(ku_{j})-\Phi^{-1}(p_{j})}{\sqrt{\rho_{j}}}\right]\right.\\
+ & -(k-1)\Phi\left[\frac{\sqrt{1-\rho_{j}}\Phi^{-1}((k-1)u_{j})-\Phi^{-1}(p_{j})}{\sqrt{\rho_{j}}}\right]\\
+ & -(1-q_{kj})\Biggr\}
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Calibrating the loss distribution of our synthetic CDO means finding the
+ values of the three unknowns 
+\begin_inset Formula $(u_{j},\rho_{j},p_{j})$
+\end_inset
+
+ that minimize the sum of the squares of this error function, i.e.,
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\min\sum_{k=1}^{n_{k}}\mathbf{1}_{k}\epsilon_{k}^{2}(u_{j},\rho_{j},p_{j}),
+\]
+
+\end_inset
+
+where
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\mathbf{1}_{k}=\begin{cases}
+1 & \textrm{if }q_{kj}\textrm{ is available,}\\
+0 & \textrm{otherwise.}
+\end{cases}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Since we have three parameters to be calibrated, we require at least three
+ equations for the error functions 
+\begin_inset Formula $\epsilon_{k}$
+\end_inset
+
+, i.e., at least three groups of issuer of a certain rating from which we
+ were able to bootstrap survival probabilities such that 
+\begin_inset Formula $\sum_{k=1}^{n_{k}}\mathbf{1}_{k}\geq3$
+\end_inset
+
+.
+ However, approximations may be used where this does not apply.
+ For instance, if 
+\begin_inset Formula $\sum_{k=1}^{n_{k}}\mathbf{1}_{k}=2$
+\end_inset
+
+, we may fix the parameter 
+\begin_inset Formula $u_{j}$
+\end_inset
+
+ and then calibrate 
+\begin_inset Formula $(\rho_{j},p_{j})$
+\end_inset
+
+.
+ Or in case 
+\begin_inset Formula $\sum_{k=1}^{n_{k}}\mathbf{1}_{k}=1$
+\end_inset
+
+, we may fix 
+\begin_inset Formula $(u_{j},\rho_{j})$
+\end_inset
+
+ and find 
+\begin_inset Formula $p_{j}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+Generic credit curves in different currencies
+\end_layout
+
+\begin_layout Standard
+One fundamental premise of our approach lies on the fact that, in an ideal
+ world, each issuer's default dynamics should be 
+\shape italic
+unique
+\shape default
+ and 
+\shape italic
+independent
+\shape default
+ of the currency in which debt is denominated.
+ The uniqueness argument suggests that each issuer possesses a unique probabilit
+y of survival term structure from which debt and CDS spreads can be derived
+ in any currency.
+ This is not solid mathematically, given that survival probabilities are
+ implied from currency denominations under different risk-neutral measures.
+ However, this not a significant error in practice and an important assumption
+ we adopted.
+\end_layout
+
+\begin_layout Standard
+On independence between the credit default and the foreign exchange (FX)
+ dynamics, while this is reasonable during the 
+\begin_inset Quotes eld
+\end_inset
+
+risk-on
+\begin_inset Quotes erd
+\end_inset
+
+ portion of economic cycles, we acknowledge that default-FX independence
+ is less realistic during 
+\begin_inset Quotes eld
+\end_inset
+
+risk-off
+\begin_inset Quotes erd
+\end_inset
+
+ periods.
+ Perhaps this is the reason why 
+\begin_inset Quotes eld
+\end_inset
+
+over 85% of the emerging market debt outstanding (in U.S.
+ dollar terms) is denominated in developed market currencies
+\begin_inset Quotes erd
+\end_inset
+
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "key-7"
+
+\end_inset
+
+.
+ USD-denominated debt from emerging markets issuers is more attractive to
+ market participants, and therefore more liquid, because it acts as a natural
+ hedge against default-FX dependence.
+ But we argue that this problem can be mitigated by hedging the FX exposure
+ in the FX markets, as most of the the more sophisticated market participants
+ do.
+\end_layout
+
+\begin_layout Standard
+Thus, ignoring the mathematical rigor of measure theory, we assume the flexibili
+ty of constructing credit spread term structures in any currency through
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:CDS"
+
+\end_inset
+
+, provided the term structure of the survival probabilities is given.
+ For instance, if we are able to calibrate a survival probability term structure
+ for USD-Senior Unsecured-Technology-BBB, we may now construct the complete
+ generic credit curve for CHF-Senior Unsecured-Technology-BBB through 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:CDS"
+
+\end_inset
+
+, where the only difference is that 
+\begin_inset Formula $B_{n}$
+\end_inset
+
+ is the CHF discount factor.
+ The same goes to bootstrapping the survival probabilities through CDS quotes
+ of different currency denominations.
+ We have in fact tested this assumption by comparing probabilities of survival
+ for single issuers with CDS quotes in different currencies.
+ Although not exactly the same as our assumption would determine, the difference
+s found in the probabilities of survival for different maturities were negligibl
+e.
+\end_layout
+
+\begin_layout Section
+Results
+\end_layout
+
+\begin_layout Standard
+From the background discussed previously, the steps for the construction
+ of generic credit curves are listed below.
+\end_layout
+
+\begin_layout Enumerate
+Define the target generic credit curves by currency-subordination-sector.
+\end_layout
+
+\begin_layout Enumerate
+Select a representative set of issuers with CDS quotes for the respective
+ subordination-sector on all available ratings.
+\end_layout
+
+\begin_layout Enumerate
+Bootstrap survival probability term structures from all available ratings
+ according to process in Section II.4.
+\end_layout
+
+\begin_layout Enumerate
+Calibrate the Vasicek loss probability distribution according to discussion
+ in Sections II.5 and II.6.
+\end_layout
+
+\begin_layout Enumerate
+Generate credit spreads according to the Vasicek loss probability distribution
+ for all ratings of the target currency-subordination-sector.
+\end_layout
+
+\begin_layout Enumerate
+Perform the previous step for all maturities in order to generate a complete
+ term structure for all target currency-subordination-sector-rating.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+scalebox{0.58}{ 
+\backslash
+begin{tabular}{rrrrrrrrr}   
+\backslash
+hline  & AAA & AA & A & BBB & BB & B & CCC & Total 
+\backslash
+
+\backslash
+    
+\backslash
+hline AUD & 2 & 16 & 59 & 94 & 27 & 6 & 2 & 206 
+\backslash
+
+\backslash
+    BRL & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 1 & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 1 
+\backslash
+
+\backslash
+    CAD & 
+\backslash
+cellcolor{gray!20} & 18 & 108 & 179 & 39 & 10 & 5 & 359 
+\backslash
+
+\backslash
+    CHF & 3 & 14 & 21 & 28 & 14 & 2 & 3 & 85 
+\backslash
+
+\backslash
+    CNH & 
+\backslash
+cellcolor{gray!20} & 1 & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 1 
+\backslash
+
+\backslash
+    CNY & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 1 & 1 & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 2 
+\backslash
+
+\backslash
+    COP & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 1 & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 1 
+\backslash
+
+\backslash
+    CZK & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 1 & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 1 
+\backslash
+
+\backslash
+    DKK & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 1 & 1 
+\backslash
+
+\backslash
+    EUR & 35 & 220 & 919 & 1130 & 397 & 202 & 70 & 2973 
+\backslash
+
+\backslash
+    GBP & 1 & 45 & 164 & 141 & 52 & 18 & 8 & 429 
+\backslash
+
+\backslash
+    HKD & 
+\backslash
+cellcolor{gray!20} & 5 & 5 & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 10 
+\backslash
+
+\backslash
+    HUF & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 1 & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 1 
+\backslash
+
+\backslash
+    IDR & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 1 & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 1 
+\backslash
+
+\backslash
+    ILS & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 1 & 
+\backslash
+cellcolor{gray!20} & 1 & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 2 
+\backslash
+
+\backslash
+    JPY & 14 & 95 & 320 & 326 & 65 & 24 & 6 & 850 
+\backslash
+
+\backslash
+    KRW & 1 & 4 & 4 & 2 & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 11 
+\backslash
+
+\backslash
+    MXN & 
+\backslash
+cellcolor{gray!20} & 1 & 
+\backslash
+cellcolor{gray!20} & 2 & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 3 
+\backslash
+
+\backslash
+    NOK & 
+\backslash
+cellcolor{gray!20} & 6 & 11 & 32 & 21 & 7 & 2 & 79 
+\backslash
+
+\backslash
+    PEN & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 1 & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 1 
+\backslash
+
+\backslash
+    PLN & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 1 & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 1 
+\backslash
+
+\backslash
+    RON & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 1 & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 1 
+\backslash
+
+\backslash
+    RUB & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 7 & 4 & 1 & 
+\backslash
+cellcolor{gray!20} & 12 
+\backslash
+
+\backslash
+    SEK & 
+\backslash
+cellcolor{gray!20} & 1 & 33 & 71 & 80 & 69 & 14 & 268 
+\backslash
+
+\backslash
+    SGD & 2 & 8 & 7 & 20 & 1 & 2 & 
+\backslash
+cellcolor{gray!20} & 40 
+\backslash
+
+\backslash
+    TRY & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 2 & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 2 
+\backslash
+
+\backslash
+    USD & 46 & 274 & 1155 & 1474 & 552 & 312 & 86 & 3899 
+\backslash
+
+\backslash
+    ZAR & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 6 & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 6 
+\backslash
+
+\backslash
+    Total & 104 & 708 & 2809 & 3521 & 1254 & 653 & 197 & 9246 
+\backslash
+
+\backslash
+     
+\backslash
+hline 
+\backslash
+end{tabular} }
+\end_layout
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+scalebox{0.40}{ 
+\backslash
+begin{tabular}{rrrrrrrrrrrrr}   
+\backslash
+hline  & BAS & GOOD & SVCS & ENRG & FIN & GOVT & HEAL & INDU & TECH & TELC
+ & UTIL & Total 
+\backslash
+
+\backslash
+    
+\backslash
+hline AUD & 16 & 34 & 34 & 13 & 60 & 7 & 2 & 16 & 2 & 17 & 14 & 215 
+\backslash
+
+\backslash
+    BRL & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 1 & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 1 
+\backslash
+
+\backslash
+    CAD & 34 & 52 & 77 & 19 & 77 & 2 & 12 & 42 & 9 & 25 & 32 & 381 
+\backslash
+
+\backslash
+    CHF & 11 & 8 & 5 & 3 & 31 & 10 & 
+\backslash
+cellcolor{gray!20} & 10 & 2 & 4 & 2 & 86 
+\backslash
+
+\backslash
+    CNH & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 1 & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 1 
+\backslash
+
+\backslash
+    CNY & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 2 & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 2 
+\backslash
+
+\backslash
+    COP & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 1 & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 1 
+\backslash
+
+\backslash
+    CZK & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 1 & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 1 
+\backslash
+
+\backslash
+    DKK & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 1 & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 1 
+\backslash
+
+\backslash
+    EUR & 204 & 339 & 378 & 179 & 1127 & 132 & 118 & 348 & 91 & 169 & 224
+ & 3309 
+\backslash
+
+\backslash
+    GBP & 24 & 43 & 57 & 9 & 209 & 7 & 5 & 44 & 4 & 31 & 33 & 466 
+\backslash
+
+\backslash
+    HKD & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 1 & 6 & 4 & 
+\backslash
+cellcolor{gray!20} & 1 & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 12 
+\backslash
+
+\backslash
+    HUF & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 1 & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 1 
+\backslash
+
+\backslash
+    IDR & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 1 & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 1 
+\backslash
+
+\backslash
+    ILS & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 1 & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 1 & 2 
+\backslash
+
+\backslash
+    JPY & 87 & 171 & 122 & 51 & 291 & 60 & 37 & 147 & 47 & 36 & 66 & 1115
+ 
+\backslash
+
+\backslash
+    KRW & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 2 & 2 & 4 & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 2 & 1 & 11 
+\backslash
+
+\backslash
+    MXN & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 1 & 1 & 1 & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 3 
+\backslash
+
+\backslash
+    NOK & 9 & 11 & 13 & 4 & 13 & 2 & 
+\backslash
+cellcolor{gray!20} & 11 & 3 & 10 & 4 & 80 
+\backslash
+
+\backslash
+    PEN & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 1 & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 1 
+\backslash
+
+\backslash
+    PLN & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 1 & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 1 
+\backslash
+
+\backslash
+    RON & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 1 & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 1 
+\backslash
+
+\backslash
+    RUB & 2 & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 2 & 7 & 2 & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 1 & 
+\backslash
+cellcolor{gray!20} & 14 
+\backslash
+
+\backslash
+    SEK & 25 & 42 & 54 & 11 & 47 & 1 & 10 & 47 & 13 & 24 & 16 & 290 
+\backslash
+
+\backslash
+    SGD & 3 & 2 & 9 & 2 & 12 & 7 & 
+\backslash
+cellcolor{gray!20} & 1 & 1 & 5 & 1 & 43 
+\backslash
+
+\backslash
+    TRY & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 1 & 
+\backslash
+cellcolor{gray!20} & 1 & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 2 
+\backslash
+
+\backslash
+    USD & 279 & 461 & 507 & 275 & 1294 & 280 & 192 & 479 & 170 & 236 & 313
+ & 4486 
+\backslash
+
+\backslash
+    ZAR & 1 & 1 & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 2 & 1 & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 1 & 6 
+\backslash
+
+\backslash
+    Total & 695 & 1164 & 1256 & 573 & 3183 & 530 & 376 & 1146 & 342 & 560
+ & 708 & 10533 
+\backslash
+
+\backslash
+     
+\backslash
+hline 
+\backslash
+end{tabular} }
+\end_layout
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Markit"
+
+\end_inset
+
+Number of quotes by rating / sector as of 23 March 2015
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+The CDS data used in this exercise come from the market data provider Markit,
+ more specifically its CDS composite report.
+ Not surprisingly, availability of CDS spread market quotes is heavy concentrate
+d in USD, EUR and JPY as well as in the financials sector, as showed in
+ 
+\begin_inset CommandInset ref
+LatexCommand formatted
+reference "fig:Markit"
+
+\end_inset
+
+.
+ Certain currencies offer less than 20 quotes (CNY, HKD, IDR, KRW and NZD),
+ and others none at all (e.g., MYR).
+ Even currencies with more abundant coverage lack market quotes for certain
+ ratings, such as AAA in CAD.
+ Overall, the availability of market quotes concentrate on the mezzanine
+ subordinations of our synthetic CDO (AA, A, BBB, BB, B) while significant
+ hard to value positions may be found in the books of financial institutions
+ for CCC and especially AAA ratings.
+ These are the typical cases where the synthetic CDO approach works well
+ in deriving missing market information.
+ 
+\end_layout
+
+\begin_layout Standard
+One example is JPY Technology, shown in 
+\begin_inset CommandInset ref
+LatexCommand formatted
+reference "fig:Survival-probabilities-spreads"
+
+\end_inset
+
+ with missing market information for AAA, B, and CCC ratings in all maturities
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+We here show only the most liquid standard maturities of 1Y, 3Y, 5Y and
+ 10Y.
+ Actual credit curves tend to be more granular, including points for maturities
+ 2Y, 4Y, 7Y and even beyond 10Y
+\end_layout
+
+\end_inset
+
+.
+\begin_inset CommandInset ref
+LatexCommand formatted
+reference "fig:Survival-probabilities-spreads"
+
+\end_inset
+
+ also shows the newly generated survival probabilities on the missing ratings
+ for all maturities.
+ As these are cumulative probabilities, it is immediately obvious on all
+ maturities that the ascending nature of the numbers is maintained from
+ CCC to AAA, and that the first loss tranche (CCC) reflects its significantly
+ higher risk profile as compared with the upper subordinations.
+ Another observation from 
+\begin_inset CommandInset ref
+LatexCommand formatted
+reference "fig:Survival-probabilities-spreads"
+
+\end_inset
+
+ is the fact that the survival probabilities decrease from 1Y to 10Y maturities,
+ reflecting the fact that default expectations increase for longer exposures
+ to non-distressed credit.
+ Finally, 
+\begin_inset CommandInset ref
+LatexCommand formatted
+reference "fig:Survival-probabilities-spreads"
+
+\end_inset
+
+ also shows the complete credit spread matrix with generic credit curves
+ in basis points (bps) for all ratings.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{tabular}{rrrrr}   
+\backslash
+hline  & 1y & 3y & 5y & 10y 
+\backslash
+
+\backslash
+    
+\backslash
+hline AAA & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} 
+\backslash
+
+\backslash
+    AA & 99.81 & 98.75 & 96.81 & 92.06 
+\backslash
+
+\backslash
+    A & 99.69 & 98.38 & 95.61 & 88.75 
+\backslash
+
+\backslash
+    BBB & 99.38 & 97.93 & 92.83 & 78.65 
+\backslash
+
+\backslash
+    BB & 97.42 & 91.78 & 83.86 & 67.52 
+\backslash
+
+\backslash
+    B & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} 
+\backslash
+
+\backslash
+    CCC & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} & 
+\backslash
+cellcolor{gray!20} 
+\backslash
+
+\backslash
+     
+\backslash
+hline 
+\backslash
+end{tabular}
+\end_layout
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{tabular}{rrrrr}   
+\backslash
+hline  & 1y & 3y & 5y & 10y 
+\backslash
+
+\backslash
+    
+\backslash
+hline AAA & 99.99 & 99.95 & 99.25 & 96.71 
+\backslash
+
+\backslash
+    AA & 99.81 & 98.75 & 96.81 & 92.06 
+\backslash
+
+\backslash
+    A & 99.69 & 98.38 & 95.61 & 88.75 
+\backslash
+
+\backslash
+    BBB & 99.38 & 97.93 & 92.83 & 78.65 
+\backslash
+
+\backslash
+    BB & 97.42 & 91.78 & 83.86 & 67.52 
+\backslash
+
+\backslash
+    B & 91.50 & 79.67 & 71.86 & 51.39 
+\backslash
+
+\backslash
+    CCC & 71.58 & 51.34 & 49.25 & 29.25 
+\backslash
+
+\backslash
+     
+\backslash
+hline 
+\backslash
+end{tabular}
+\end_layout
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{tabular}{rrrrr}   
+\backslash
+hline  & 1y & 3y & 5y & 10y 
+\backslash
+
+\backslash
+    
+\backslash
+hline AAA & 0.19 & 1.94 & 9.37 & 19.10 
+\backslash
+
+\backslash
+    AA & 13.23 & 25.90 & 38.25 & 47.34 
+\backslash
+
+\backslash
+    A & 20.01 & 34.05 & 52.93 & 68.00 
+\backslash
+
+\backslash
+    BBB & 35.43 & 46.04 & 88.71 & 134.16 
+\backslash
+
+\backslash
+    BB & 124.92 & 168.99 & 203.69 & 223.06 
+\backslash
+
+\backslash
+    B & 593.34 & 437.43 & 394.55 & 390.95 
+\backslash
+
+\backslash
+    CCC & 2960.96 & 1468.03 & 1030.70 & 866.41 
+\backslash
+
+\backslash
+     
+\backslash
+hline 
+\backslash
+end{tabular}
+\end_layout
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Survival-probabilities-spreads"
+
+\end_inset
+
+Survival probabilities / Implied CDS spreads for JPY Technology as of 23
+ March 2015
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+From another angle, 
+\begin_inset CommandInset ref
+LatexCommand formatted
+reference "fig:PDF-/-CDF"
+
+\end_inset
+
+ shows these results in the form of the Vasicek PDF and CDF.
+ Note that the probability mass of the PDF from 1Y to 10Y maturities spreads
+ out more evenly as we move to higher maturities.
+ This is exactly as expected given that default becomes more likely the
+ lower the tranche subordination is, with survival expectation moving upwards
+ in the subordination scale.
+ Overall, the results were in line with expectation of the loss dynamics
+ of credit portfolios.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename curve-pdf.png
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename curve-cdf.png
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:PDF-/-CDF"
+
+\end_inset
+
+PDF / CDF for JPY Technology as of 23 March 2015
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Conclusion
+\end_layout
+
+\begin_layout Standard
+In this article we discussed the importance of having generic credit curves
+ consistent with the wider credit markets in order to value and risk manage
+ illiquid exposure to credit instruments.
+ Our proposed approach to construct such curves involved modelling the universe
+ of rated credit issuers with CDS market quotes as a synthetic CDO, in which
+ the ratings represented the different tranches of this CDO.
+ We showed how Vasicek loss portfolio distributions can be calibrated for
+ each maturity of a credit curve, allowing for the generation of survival
+ probabilities and CDS spreads for ratings without available market quotes
+ with satisfactory results.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "1"
+key "key-1"
+
+\end_inset
+
+ D.
+ O'kane and S.
+ Turnbull.
+ 
+\shape italic
+Valuation of credit default swaps
+\shape default
+.
+ Lehman Brothers Quantitative Credit Research.
+ (April 2003)
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "2"
+key "key-2"
+
+\end_inset
+
+
+\shape italic
+Standard CDS Examples.
+ Supporting document for the implementation of the ISDA CDS Standard Model
+ 
+\shape default
+(October 2012)
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "3"
+key "key-3"
+
+\end_inset
+
+O.
+ A.
+ Vasicek.
+ 
+\shape italic
+The distribution of loan portfolio value
+\shape default
+.
+ Risk.
+ (December 2002)
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "4"
+key "key-4"
+
+\end_inset
+
+
+\shape italic
+Moody's Ultimate Recovery Database.
+ 
+\shape default
+Moody's Investor Service.
+ (April 2007)
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "5"
+key "key-5"
+
+\end_inset
+
+J.
+ Tschirhart, J.
+ O'Brien, M.
+ Moise, E.
+ Yang.
+ 
+\shape italic
+Bank Commercial Loan Fair Value Practices
+\shape default
+.
+ Finance and Economics Discussion Series: 2007-29, Federal Reserve Board,
+ Washington, D.C.,
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://www.federalreserve.gov/pubs/feds/2007/200729/
+\end_layout
+
+\end_inset
+
+.
+ (June 2007)
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "6"
+key "key-6"
+
+\end_inset
+
+S.
+ Delikouras, R.
+ F.
+ Dittmar, H Li.
+ 
+\shape italic
+Do Dollar-Denominated Emerging Market Corporate Bonds Insure Foreign Exchange
+ Risk?
+\shape default
+ 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://webuser.bus.umich.edu/rdittmar/Research_files/Papers/Delikouras_Dittmar_Li20
+13.pdf
+\end_layout
+
+\end_inset
+
+.
+ (November 2013)
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "7"
+key "key-7"
+
+\end_inset
+
+R.C.
+ Merton RC.
+ 
+\shape italic
+On the pricing of corporate debt: the risk structure of interest rates
+\shape default
+.
+ Journal of Finance, 29:449–70.
+ (1974)
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "8"
+key "key-8"
+
+\end_inset
+
+D.
+ X.
+ Li.
+ 
+\shape italic
+The Valuation of Basket Credit Derivatives
+\shape default
+.
+ The RiskMetrics Group, CreditMetrics Monitor.
+ (April 1999)
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "9"
+key "key-9"
+
+\end_inset
+
+D.
+ X.
+ Li.
+ 
+\shape italic
+On Default Correlation: A Copula Function Approach
+\shape default
+.
+ Available at SSRN: 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://ssrn.com/abstract=187289
+\end_layout
+
+\end_inset
+
+.
+ (September 1999)
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "10"
+key "key-10"
+
+\end_inset
+
+G.
+ M.
+ Gupton, C.
+ C.
+ Finger, and M.
+ Bhatia.
+ 
+\shape italic
+CreditMetrics Technical Document
+\shape default
+.
+ New York: Morgan Guaranty Trust Co.
+ (1997)
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "11"
+key "key-11"
+
+\end_inset
+
+O.
+ A.
+ Vasicek.
+ 
+\shape italic
+Probability of Loss on Loan Portfolio
+\shape default
+.
+ KMV Corporation.
+ (December 1987)
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "12"
+key "key-12"
+
+\end_inset
+
+D.
+ X.
+ Li.
+ 
+\shape italic
+Constructing a credit curve
+\shape default
+.
+ Credit Risk Special Report, Risk, pp.
+ 40-44.
+ (November 1998)
+\end_layout
+
+\end_body
+\end_document
